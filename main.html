@@ -28,6 +28,7 @@
 	var my_name = "";
 	var response;
 	var size = 0;
+	var Fin_elo = 0;
 	function loadXMLDoc() {
 	my_id=document.getElementById("TextID").value;
 	var xhttp = new XMLHttpRequest();
@@ -41,10 +42,13 @@
 			if(response.data.matches[0].winning_algo.id==my_id)
 			{
 				my_name = response.data.matches[0].winning_algo.name;
+				Fin_elo = response.data.matches[0].winning_algo.elo;
+
 			}
 			else
 			{
 				my_name = response.data.matches[0].losing_algo.name;
+				Fin_elo = response.data.matches[0].losing_algo.elo;
 			}
 		}
     }
@@ -70,8 +74,9 @@ var chart = new CanvasJS.Chart("chartContainer", {
 	}]
 });
 var my_elo = 1500;
-var k = 32;
-var my_exp = 0;
+var K = 32;
+var EloDifference = 0;
+var percentage = 0;
 var my_score = 0;
 var enemy_elo = 0;
 var nTitle = "";
@@ -87,8 +92,8 @@ var updateChart = function ()
 		dps.pop();
 	}
 	my_score=0;
-	my_exp=0;
-	my_elo=1500
+	perc_tot=0;
+	my_elo=1500;
 	dps.push({
 		x: 0,
 		y: 1500
@@ -108,25 +113,33 @@ var updateChart = function ()
 	{
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
-			my_score+=1;
+			my_score = 1;
 			enemy_elo = Number(response.data.matches[i].losing_algo.elo);
 		}
 		else if(response.data.matches[i].losing_algo.id==my_id)
 		{
+			my_score = 0;
 			enemy_elo = Number(response.data.matches[i].winning_algo.elo);
 		}
-		my_exp=Number(parseFloat(my_exp+(1/(1+Math.pow(10,((enemy_elo-my_elo)/400))))).toFixed(2));
+		EloDifference = enemy_elo-my_elo;
+		percentage = 1 / ( 1 + Math.pow( 10, EloDifference / 400 ) );
+		my_elo += Math.round( K * ( my_score - percentage ) );
+		
+		
 		console.log('i: '+i);
 		console.log('score: '+my_score);
 		console.log('enemy_elo: '+enemy_elo);
-		console.log('temp exp: '+1/(1+Math.pow(10,((enemy_elo-my_elo)/400))));
-		console.log('exp: '+my_exp);
-		my_elo=Number(parseFloat(my_elo+k*(my_score-my_exp)).toFixed());
+		console.log('percentage: '+percentage);
+		if(i==size-1)
+		{
+			my_elo=Fin_elo;
+		}
 		dps.push({
-			x: i+1,
+			x: i,
 			y: my_elo
 		});
 	}
+	
 	}
 	if (dps.length > dataLength) {
 		dps.shift();
