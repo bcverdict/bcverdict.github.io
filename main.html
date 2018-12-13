@@ -66,60 +66,53 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		dataPoints: dps 
 	}]
 });
-var my_elo = 0;
-var round = 0;
+var my_elo = 1500;
+var k = 32;
+var my_exp = 0;
+var my_score = 0;
 var enemy_elo = 0;
-var P1 = 0;
 var nTitle = "";
-var xVal = 0;
-var updateInterval = 1000;
+var updateInterval = 10000;
 var dataLength = size; // number of dataPoints visible at any point
 var updateChart = function ()
 {
 	nTitle=my_name+" Elo Chart";
 	tt.pop();
 	tt.push(nTitle);
-	for(var i = 0; i<size; i++)
+	for(var i = 0; i<size+1; i++)
 	{
 		dps.pop();
 	}
-	for (var i = 0; i < size; i++) 
-	{	
+	my_score=0;
+	my_exp=0;
+	my_elo=1500
+	dps.push({
+		x: 0,
+		y: 1500
+	});
+	if(size>0){
+	for (var i = size-1; i>=0; i--) 
+	{
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
-			if(i==0)
-			{
-				my_elo = response.data.matches[i].winning_algo.elo;
-			}
-			else
-			{
-				enemy_elo = Number(response.data.matches[i].losing_algo.elo);
-				P1 = (1.0 / (1.0+Math.pow(10,((my_elo-enemy_elo)/400))));
-				my_elo=my_elo+32*(1-P1);
-			}
+			my_score+=1;
+			enemy_elo = Number(response.data.matches[i].losing_algo.elo);
 		}
 		else if(response.data.matches[i].losing_algo.id==my_id)
 		{
-			if(i==0)
-			{
-				my_elo = response.data.matches[i].losing_algo.elo;
-			}
-			else
-			{
-				enemy_elo = response.data.matches[i].winning_algo.elo;
-				P1 = (1.0 / (1.0+Math.pow(10,((my_elo-enemy_elo)/400))));
-				my_elo=my_elo+32*(0-P1);
-			}
+			console.log('id: '+response.data.matches[i].winning_algo.id);
+			enemy_elo = Number(response.data.matches[i].winning_algo.elo);
 		}
-		round = Number(parseFloat(my_elo).toFixed());
-		console.log(round);
-		console.log(typeof my_elo);
-		console.log(typeof round);
-
+		my_exp=Number(parseFloat(my_exp+(1/(1+Math.pow(10,((enemy_elo-my_elo)/400))))).toFixed(2));
+		console.log('i: '+i);
+		console.log('score: '+my_score);
+		console.log('exp: '+my_exp);
+		my_elo=Number(parseFloat(my_elo+k*(my_score-my_exp)).toFixed());
 		dps.push({
 			x: Math.abs(i-size),
-			y: round
+			y: my_elo
 		});
+	}
 	}
 	if (dps.length > dataLength) {
 		dps.shift();
