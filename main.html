@@ -36,13 +36,16 @@
 	{
 		response = JSON.parse(xhttp.responseText);
 		size=response.data.matches.length;
-		if(response.data.matches[1].winning_algo.id==my_id)
+		if(size>0)
 		{
-			my_name = response.data.matches[1].winning_algo.name;
-		}
-		else
-		{
-			my_name = response.data.matches[1].losing_algo.name;
+			if(response.data.matches[0].winning_algo.id==my_id)
+			{
+				my_name = response.data.matches[0].winning_algo.name;
+			}
+			else
+			{
+				my_name = response.data.matches[0].losing_algo.name;
+			}
 		}
     }
   };
@@ -91,6 +94,16 @@ var updateChart = function ()
 		y: 1500
 	});
 	if(size>0){
+	var xhttp = new XMLHttpRequest();
+	xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200)
+	{
+		response = JSON.parse(xhttp.responseText);
+		size=response.data.matches.length;
+    }
+  };
+  xhttp.open("GET","https://terminal.c1games.com/api/game/algo/"+my_id+"/matches", true);
+  xhttp.send();
 	for (var i = 0; i<size; i++) 
 	{
 		if(response.data.matches[i].winning_algo.id==my_id)
