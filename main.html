@@ -14,7 +14,6 @@
   margin: 4px 2px;
   cursor: pointer;
 }
-
 .button1 {border-radius: 20px;}
 </style>
 <div id="demo">
@@ -50,9 +49,7 @@
   xhttp.open("GET","https://terminal.c1games.com/api/game/algo/"+my_id+"/matches", true);
   xhttp.send();
 }
-
 window.onload = function () {
-
 var dps = [];
 var tt = [];
 var chart = new CanvasJS.Chart("chartContainer", {
@@ -69,30 +66,59 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		dataPoints: dps 
 	}]
 });
+var my_elo = 0;
+var round = 0;
+var enemy_elo = 0;
+var P1 = 0;
 var nTitle = "";
 var xVal = 0;
-var yVal = 100;
 var updateInterval = 1000;
 var dataLength = size; // number of dataPoints visible at any point
-
 var updateChart = function ()
 {
 	nTitle=my_name+" Elo Chart";
 	tt.pop();
 	tt.push(nTitle);
-	for (var i = 0; i < size; i++) {	
+	for(var i = 0; i<size; i++)
+	{
+		dps.pop();
+	}
+	for (var i = 0; i < size; i++) 
+	{	
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
-			yVal = response.data.matches[i].losing_algo.elo;
+			if(i==0)
+			{
+				my_elo = response.data.matches[i].winning_algo.elo;
+			}
+			else
+			{
+				enemy_elo = Number(response.data.matches[i].losing_algo.elo);
+				P1 = (1.0 / (1.0+Math.pow(10,((my_elo-enemy_elo)/400))));
+				my_elo=my_elo+32*(1-P1);
+			}
 		}
 		else if(response.data.matches[i].losing_algo.id==my_id)
-
 		{
-			yVal = response.data.matches[i].winning_algo.elo;
+			if(i==0)
+			{
+				my_elo = response.data.matches[i].losing_algo.elo;
+			}
+			else
+			{
+				enemy_elo = response.data.matches[i].winning_algo.elo;
+				P1 = (1.0 / (1.0+Math.pow(10,((my_elo-enemy_elo)/400))));
+				my_elo=my_elo+32*(0-P1);
+			}
 		}
+		round = Number(parseFloat(my_elo).toFixed());
+		console.log(round);
+		console.log(typeof my_elo);
+		console.log(typeof round);
+
 		dps.push({
 			x: Math.abs(i-size),
-			y: yVal
+			y: round
 		});
 	}
 	if (dps.length > dataLength) {
@@ -100,10 +126,8 @@ var updateChart = function ()
 	}
 	chart.render();
 };
-
 updateChart(dataLength); 
 setInterval(function(){ updateChart() }, updateInterval); 
-
 }
 </script>
 </head>
