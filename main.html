@@ -91,7 +91,7 @@ var updateChart = function ()
 		y: 1500
 	});
 	if(size>0){
-	for (var i = size-1; i>=0; i--) 
+	for (var i = 0; i<size; i++) 
 	{
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
@@ -100,16 +100,17 @@ var updateChart = function ()
 		}
 		else if(response.data.matches[i].losing_algo.id==my_id)
 		{
-			console.log('id: '+response.data.matches[i].winning_algo.id);
 			enemy_elo = Number(response.data.matches[i].winning_algo.elo);
 		}
 		my_exp=Number(parseFloat(my_exp+(1/(1+Math.pow(10,((enemy_elo-my_elo)/400))))).toFixed(2));
 		console.log('i: '+i);
 		console.log('score: '+my_score);
+		console.log('enemy_elo: '+enemy_elo);
+		console.log('temp exp: '+1/(1+Math.pow(10,((enemy_elo-my_elo)/400))));
 		console.log('exp: '+my_exp);
 		my_elo=Number(parseFloat(my_elo+k*(my_score-my_exp)).toFixed());
 		dps.push({
-			x: Math.abs(i-size),
+			x: i+1,
 			y: my_elo
 		});
 	}
