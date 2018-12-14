@@ -177,38 +177,57 @@ var updateChart = function ()
 	}
 	if(temp!=-1)
 	{
-		document.getElementById("riv").innerHTML = "Rival: "+rival[temp]+"<br> Games played: "+frequ[temp]+'<br>';
+		var x = document.getElementById("myTable").rows.length;
+		for(var i = 0; i<x;i++)
+		{
+			document.getElementById("myTable").deleteRow(0);
+		}
+		document.getElementById("opp").innerHTML = "Rival: "+rival[temp]+"<br> Games played: "+frequ[temp]+'<br>';
 		for(var i = 0; i<size; i++)
 		{
 			if(response.data.matches[i].winning_algo.id==my_id)
 			{
 				if(rival[temp]== response.data.matches[i].losing_algo.user)
 				{
-					document.getElementById("riv").innerHTML += '<br>'+response.data.matches[i].losing_algo.name;
-					var str=response.data.matches[i].losing_algo.name;
-					var spaces= 30-str.length;
-					for(var j = 0; j<spaces;j++)
-					{
-						document.getElementById("riv").innerHTML +='\xa0';
-					}
-					document.getElementById("riv").innerHTML +='W';
+					var table = document.getElementById("myTable");
+					var row = table.insertRow(0);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					cell1.innerHTML = response.data.matches[i].losing_algo.name;
+					cell2.innerHTML = response.data.matches[i].turns;
+					cell3.innerHTML = response.data.matches[i].id;
+					cell4.innerHTML = response.data.matches[i].losing_algo.elo;
 				}
 			}
 			else if(response.data.matches[i].losing_algo.id==my_id)
 			{
 				if(rival[temp]== response.data.matches[i].winning_algo.user)
 				{
-					document.getElementById("riv").innerHTML += '<br>'+response.data.matches[i].winning_algo.name;
-					var str=response.data.matches[i].winning_algo.name;
-					var spaces= 30-str.length;
-					for(var j = 0; j<spaces;j++)
-					{
-						document.getElementById("riv").innerHTML +='\xa0';
-					}
-					document.getElementById("riv").innerHTML +='L';
+					var table = document.getElementById("myTable");
+					var row = table.insertRow(0);
+					var cell1 = row.insertCell(0);
+					var cell2 = row.insertCell(1);
+					var cell3 = row.insertCell(2);
+					var cell4 = row.insertCell(3);
+					cell1.innerHTML = response.data.matches[i].winning_algo.name;
+					cell2.innerHTML = response.data.matches[i].turns;
+					cell3.innerHTML = response.data.matches[i].id;
+					cell4.innerHTML = response.data.matches[i].winning_algo.elo;
 				}
 			}	
 		}
+		var table = document.getElementById("myTable");
+		var row = table.insertRow(0);
+		var cell1 = row.insertCell(0);
+		var cell2 = row.insertCell(1);
+		var cell3 = row.insertCell(2);
+		var cell4 = row.insertCell(3);
+		cell1.innerHTML = "Algo name";
+		cell2.innerHTML = "Turns";
+		cell3.innerHTML = "Match ID";
+		cell4.innerHTML = "Elo";
 	}
 	}
 	if (dps.length > dataLength) 
@@ -225,6 +244,11 @@ setInterval(function(){ updateChart() }, updateInterval);
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<h1 id = 'riv'></h1> 
+<h1 id = 'opp'>
+</h1>
+<h1 id = 'riv'>
+<table id="myTable" style="width:100%">
+</table>
+</h1> 
 </body>
 </html>
