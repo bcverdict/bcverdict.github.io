@@ -73,6 +73,10 @@ var chart = new CanvasJS.Chart("chartContainer", {
 		dataPoints: dps 
 	}]
 });
+var rival = [];
+var frequ = [];
+var name = [];
+var wl = [];
 var my_elo = 1500;
 var K = 32;
 var EloDifference = 0;
@@ -87,17 +91,8 @@ var updateChart = function ()
 	nTitle=my_name+" Elo Chart";
 	tt.pop();
 	tt.push(nTitle);
-	for(var i = 0; i<size+1; i++)
-	{
-		dps.pop();
-	}
 	my_score=0;
-	perc_tot=0;
 	my_elo=1500;
-	dps.push({
-		x: 0,
-		y: 1500
-	});
 	if(size>0){
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
@@ -109,39 +104,115 @@ var updateChart = function ()
   };
   xhttp.open("GET","https://terminal.c1games.com/api/game/algo/"+my_id+"/matches", true);
   xhttp.send();
+	for(var i = 0; i<size; i++)
+	{
+		dps.pop();
+		rival.pop();
+		frequ.pop();
+	}
+	for(var i = 0; i<name.length; i++)
+	{
+		name.pop();
+		wl.pop();
+	}
 	for (var i = 0; i<size; i++) 
 	{
+		if(i==0)
+		{
+			dps.push({
+				x: i,
+				y: 1500
+			});
+		}
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
 			my_score = 1;
 			enemy_elo = Number(response.data.matches[i].losing_algo.elo);
+			enemy_name = response.data.matches[i].losing_algo.user;
 		}
 		else if(response.data.matches[i].losing_algo.id==my_id)
 		{
 			my_score = 0;
 			enemy_elo = Number(response.data.matches[i].winning_algo.elo);
+			enemy_name = response.data.matches[i].winning_algo.user;
+		}
+		var index = -1;
+		for(var j =0; j<rival.length;j++)
+		{
+			if(rival[j]==enemy_name)
+			{
+				index=j;
+				break;
+			}
+		}
+		if(index!=-1)
+		{
+			frequ[index]+=1;
+		}
+		else
+		{
+			rival.push(enemy_name);
+			frequ.push(1);
 		}
 		EloDifference = enemy_elo-my_elo;
 		percentage = 1 / ( 1 + Math.pow( 10, EloDifference / 400 ) );
 		my_elo += Math.round( K * ( my_score - percentage ) );
 		
-		
-		console.log('i: '+i);
-		console.log('score: '+my_score);
-		console.log('enemy_elo: '+enemy_elo);
-		console.log('percentage: '+percentage);
 		if(i==size-1)
 		{
 			my_elo=Fin_elo;
 		}
 		dps.push({
-			x: i,
+			x: i+1,
 			y: my_elo
 		});
 	}
-	
+	var temp = -1;
+	for(var i = 0; i<frequ.length;i++)
+	{
+		if(frequ[i]>temp)
+		{
+			temp=i;
+		}
 	}
-	if (dps.length > dataLength) {
+	if(temp!=-1)
+	{
+		document.getElementById("riv").innerHTML = "Rival: "+rival[temp]+"<br> Games played: "+frequ[temp]+'<br>';
+		for(var i = 0; i<size; i++)
+		{
+			if(response.data.matches[i].winning_algo.id==my_id)
+			{
+				if(rival[temp]== response.data.matches[i].losing_algo.user)
+				{
+					document.getElementById("riv").innerHTML += '<br>'+response.data.matches[i].losing_algo.name;
+					var str=response.data.matches[i].losing_algo.name;
+					var spaces= 30-str.length;
+					for(var j = 0; j<spaces;j++)
+					{
+						document.getElementById("riv").innerHTML +='\xa0';
+					}
+					document.getElementById("riv").innerHTML +='W';
+				}
+			}
+			else if(response.data.matches[i].losing_algo.id==my_id)
+			{
+				if(rival[temp]== response.data.matches[i].winning_algo.user)
+				{
+					document.getElementById("riv").innerHTML += '<br>'+response.data.matches[i].winning_algo.name;
+					var str=response.data.matches[i].winning_algo.name;
+					var spaces= 30-str.length;
+					for(var j = 0; j<spaces;j++)
+					{
+						document.getElementById("riv").innerHTML +='\xa0';
+					}
+					document.getElementById("riv").innerHTML +='L';
+				}
+			}	
+		}
+	}
+	}
+	if (dps.length > dataLength) 
+	{
 		dps.shift();
 	}
 	chart.render();
@@ -153,13 +224,7 @@ setInterval(function(){ updateChart() }, updateInterval);
 </head>
 <body>
 <div id="chartContainer" style="height: 300px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script> 
-</body>
-</html>
-</script>
-</head>
-<body>
-<div id="chartContainer" style="height: 300px; width: 100%;"></div>
 <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<h1 id = 'riv'></h1> 
 </body>
 </html>
