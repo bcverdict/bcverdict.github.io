@@ -104,7 +104,7 @@ var updateChart = function ()
   };
   xhttp.open("GET","https://terminal.c1games.com/api/game/algo/"+my_id+"/matches", true);
   xhttp.send();
-	for(var i = 0; i<size; i++)
+	for(var i = 0; i<100; i++)
 	{
 		dps.pop();
 		rival.pop();
@@ -189,6 +189,7 @@ var updateChart = function ()
 			{
 				if(rival[temp]== response.data.matches[i].losing_algo.user)
 				{
+					var watch = "watch";
 					var table = document.getElementById("myTable");
 					var row = table.insertRow(0);
 					var cell1 = row.insertCell(0);
@@ -200,13 +201,14 @@ var updateChart = function ()
 					cell2.innerHTML = "W";
 					cell3.innerHTML = response.data.matches[i].turns;
 					cell4.innerHTML = response.data.matches[i].losing_algo.elo;
-					cell5.innerHTML = response.data.matches[i].id;
+					cell5.innerHTML = watch.link("https://terminal.c1games.com/watch/"+response.data.matches[i].id);
 				}
 			}
 			else if(response.data.matches[i].losing_algo.id==my_id)
 			{
 				if(rival[temp]== response.data.matches[i].winning_algo.user)
 				{
+					var watch = "watch";
 					var table = document.getElementById("myTable");
 					var row = table.insertRow(0);
 					var cell1 = row.insertCell(0);
@@ -218,7 +220,7 @@ var updateChart = function ()
 					cell2.innerHTML = "L";
 					cell3.innerHTML = response.data.matches[i].turns;
 					cell4.innerHTML = response.data.matches[i].winning_algo.elo;
-					cell5.innerHTML = response.data.matches[i].id;
+					cell5.innerHTML = watch.link("https://terminal.c1games.com/watch/"+response.data.matches[i].id);
 				}
 			}	
 		}
@@ -233,7 +235,7 @@ var updateChart = function ()
 		cell2.innerHTML = "Result";
 		cell3.innerHTML = "Turns";
 		cell4.innerHTML = "Elo";
-		cell5.innerHTML = "Match ID";
+		cell5.innerHTML = "Game";
 	}
 	}
 	if (dps.length > dataLength) 
