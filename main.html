@@ -18,7 +18,9 @@
 </style>
 <div id="demo">
 	<center>
+	<h2>
 	Please Enter Algo id:
+	</h2>
 	<input type="text" id="TextID"><br>
 	<button class="button button1" onclick="loadXMLDoc()">Find</button>
 	</center>
@@ -163,8 +165,8 @@ var updateChart = function ()
 			my_elo=Fin_elo;
 		}
 		dps.push({
-			x: i+1,
-			y: my_elo
+			y: my_elo,
+			label: enemy_name
 		});
 	}
 	var temp = -1;
@@ -182,7 +184,7 @@ var updateChart = function ()
 		{
 			document.getElementById("myTable").deleteRow(0);
 		}
-		document.getElementById("opp").innerHTML = "Rival: "+rival[temp]+"<br> Games played: "+frequ[temp]+'<br>';
+		document.getElementById("opp").innerHTML = "<center>Rival:&nbsp"+rival[temp]+"<br> Games played:&nbsp"+frequ[temp]+'</center>';
 		for(var i = 0; i<size; i++)
 		{
 			if(response.data.matches[i].winning_algo.id==my_id)
