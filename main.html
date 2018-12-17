@@ -45,7 +45,6 @@
 			{
 				my_name = response.data.matches[0].winning_algo.name;
 				Fin_elo = response.data.matches[0].winning_algo.elo;
-
 			}
 			else
 			{
@@ -121,7 +120,7 @@ var updateChart = function ()
 		name.pop();
 		wl.pop();
 	}
-	for (var i = 0; i<size; i++) 
+	for (var i = size-1; i>=0; i--) 
 	{
 		if(response.data.matches[i].winning_algo.id==my_id)
 		{
@@ -157,7 +156,7 @@ var updateChart = function ()
 		percentage = 1 / ( 1 + Math.pow( 10, EloDifference / 400 ) );
 		my_elo += Math.round( K * ( my_score - percentage ) );
 		
-		if(i==size-1)
+		if(i==0)
 		{
 			my_elo=Fin_elo;
 		}
