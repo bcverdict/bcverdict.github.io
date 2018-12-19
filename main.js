@@ -42,6 +42,9 @@ async function plot() {
       : matches[0].losing_algo
   const { name, elo } = algoData
 
+  document.getElementById('loading').innerHTML = ''
+  document.title = `${name} - matches`
+
   tt.pop()
   tt.push(`"${name}" elo over matches`)
   let my_score = 0
@@ -64,7 +67,6 @@ async function plot() {
       my_score = 1
       enemy_elo = Number(response.data.matches[i].losing_algo.elo)
       enemy_name = response.data.matches[i].losing_algo.user
-      var watch = 'watch'
       var table = document.getElementById('fullTable')
       var row = table.insertRow(0)
       var cell1 = row.insertCell(0)
@@ -76,14 +78,10 @@ async function plot() {
       cell2.innerHTML = 'W'
       cell3.innerHTML = response.data.matches[i].turns
       cell4.innerHTML = response.data.matches[i].losing_algo.elo
-      cell5.innerHTML = watch.link(
-        'https://terminal.c1games.com/watch/' + response.data.matches[i].id
-      )
     } else {
       my_score = 0
       enemy_elo = Number(response.data.matches[i].winning_algo.elo)
       enemy_name = response.data.matches[i].winning_algo.user
-      var watch = 'watch'
       var table = document.getElementById('fullTable')
       var row = table.insertRow(0)
       var cell1 = row.insertCell(0)
@@ -95,10 +93,8 @@ async function plot() {
       cell2.innerHTML = 'L'
       cell3.innerHTML = response.data.matches[i].turns
       cell4.innerHTML = response.data.matches[i].winning_algo.elo
-      cell5.innerHTML = watch.link(
-        'https://terminal.c1games.com/watch/' + response.data.matches[i].id
-      )
     }
+    cell5.innerHTML = `<a href='https://terminal.c1games.com/watch/${response.data.matches[i].id}' target='_blank'>watch</a>`
     var index = -1
     for (var j = 0; j < rival.length; j++) {
       if (rival[j] == enemy_name) {
@@ -142,7 +138,6 @@ async function plot() {
     for (var i = 0; i < matches.length; i++) {
       if (response.data.matches[i].winning_algo.id == algoId) {
         if (rival[temp] == response.data.matches[i].losing_algo.user) {
-          var watch = 'watch'
           var table = document.getElementById('myTable')
           var row = table.insertRow(0)
           var cell1 = row.insertCell(0)
@@ -154,13 +149,9 @@ async function plot() {
           cell2.innerHTML = 'W'
           cell3.innerHTML = response.data.matches[i].turns
           cell4.innerHTML = response.data.matches[i].losing_algo.elo
-          cell5.innerHTML = watch.link(
-            'https://terminal.c1games.com/watch/' + response.data.matches[i].id
-          )
         }
       } else {
         if (rival[temp] == response.data.matches[i].winning_algo.user) {
-          var watch = 'watch'
           var table = document.getElementById('myTable')
           var row = table.insertRow(0)
           var cell1 = row.insertCell(0)
@@ -172,11 +163,9 @@ async function plot() {
           cell2.innerHTML = 'L'
           cell3.innerHTML = response.data.matches[i].turns
           cell4.innerHTML = response.data.matches[i].winning_algo.elo
-          cell5.innerHTML = watch.link(
-            'https://terminal.c1games.com/watch/' + response.data.matches[i].id
-          )
         }
       }
+      cell5.innerHTML = `<a href='https://terminal.c1games.com/watch/${response.data.matches[i].id}' target='_blank'>watch</a>`
       if (i == 0) {
         var table = document.getElementById('fullTable')
         var row = table.insertRow(0)
