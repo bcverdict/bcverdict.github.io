@@ -49,6 +49,8 @@ async function plot() {
   tt.push(`"${name}" elo over matches`)
   let my_score = 0
   let my_elo = 1500
+  let wins = 0
+  let losses = 0
   for (var i = 0; i < 100; i++) {
     dps.pop()
     rival.pop()
@@ -61,9 +63,14 @@ async function plot() {
   for (var i = matches.length - 1; i >= 0; i--) {
     if (i == matches.length - 1) {
       document.getElementById('ftittle').innerHTML =
-        '<center>All games:</center>'
+        '<center>All games:<br></center>'
+    }
+	if (i == 0) {
+      document.getElementById('ftittle').innerHTML +=
+        '<center>Wins:'+wins+' Lost:'+losses+'</center>'
     }
     if (response.data.matches[i].winning_algo.id == algoId) {
+	  wins += 1
       my_score = 1
       enemy_elo = Number(response.data.matches[i].losing_algo.elo)
       enemy_name = response.data.matches[i].losing_algo.user
@@ -79,6 +86,7 @@ async function plot() {
       cell3.innerHTML = response.data.matches[i].turns
       cell4.innerHTML = response.data.matches[i].losing_algo.elo
     } else {
+	  losses += 1
       my_score = 0
       enemy_elo = Number(response.data.matches[i].winning_algo.elo)
       enemy_name = response.data.matches[i].winning_algo.user
