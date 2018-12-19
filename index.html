@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      button {
+        background-color: red;
+        border: none;
+        color: white;
+        margin: 12px;
+        padding: 5px;
+        padding-left: 8px;
+        padding-right: 8px;
+        display: inline-block;
+        cursor: pointer;
+        border-radius: 20px;
+      }
+    </style>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+  </head>
+  <body>
+    <div style="text-align:center">
+      <h2>Please Enter Algo id:</h2>
+      <input type="text" id="algo-id" /> <br />
+      <button id="find">Find</button>
+      <button id="update" style="margin-left:0">Update</button>
+    </div>
+    <div id="chartContainer" style="height: 300px; width: 100%;"></div>
+    <h2 id="opp"></h2>
+    <h3 id="riv"><table id="myTable" style="width:100%"></table></h3>
+    <h2 id="ftittle"></h2>
+    <h3 id="full"><table id="fullTable" style="width:100%"></table></h3>
+  </body>
+  <footer><script src="main.js"></script></footer>
+</html>
