@@ -30,7 +30,7 @@ async function plot() {
   const { name, elo } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
   document.getElementById('loading').innerHTML = ''
-  document.title = `${name} - matches`
+  document.title = `${name} (${algoId}) matches`
   chartConfig.options.title.text = `"${name}" elo over matches`
   chartConfig.data.datasets[0].data.length = 0
   chartConfig.data.labels.length = 0
