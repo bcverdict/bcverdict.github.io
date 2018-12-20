@@ -26,7 +26,7 @@ async function plot() {
   if (fetched.status != 200) return document.getElementById('loading').innerText = 'failed to retrieve data'
   const response = await fetched.json()
   const matches = response.data.matches.reverse()
-  if (!(matches.length > 0)) return
+  if (!(matches.length > 0)) return document.getElementById('loading').innerText = 'no matches found'
   const { name, elo } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
   document.getElementById('loading').innerHTML = ''
