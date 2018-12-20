@@ -21,37 +21,34 @@
         border-radius: 20px;
       }
 
-      h1 {
-        text-align: center
+      h1, h2 { text-align: center }
+      h2 { color: grey }
+
+      th, td {
+        padding: 8px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
       }
 
-      h2 {
-        text-align: center;
-        color: grey;
-      }
-	  th, td {
-	  padding: 8px;
-	  text-align: left;
-	  border-bottom: 1px solid #ddd;
-	}
+      p { margin-bottom: 9px }
     </style>
-    <script src="https://unpkg.com/chart.js@2.7.3/dist/Chart.min.js"></script>
+    <script src='https://unpkg.com/chart.js@2.7.3/dist/Chart.min.js'></script>
   </head>
   <body>
-    <div style="text-align:center">
+    <div style='text-align:center'>
       <h2>Please Enter Algo id:</h2>
-      <input type="text" id="algo-id" /> <br />
-      <button id="find">Find</button>
-      <button id="update" style="margin-left:0">Update</button>
-      <h1 id='loading'>loading..</h1>
+      <input type='text' id='algo-id'><br>
+      <button id='find'>Find</button>
+      <button id='update' style='margin-left:0'>Update</button>
+      <h2 id='loading'></h2>
     </div>
-    <canvas id="chart" style="height: 300px; width: 100%"></canvas>
-    <h1 id="rivalTitle"><h1>
-    <h2 id="rivalStats"></h2>
-    <h3><table id="rivalTable" style="width: 100%"></table></h3>
-    <h1 id="fullTitle"></h1>
-    <h2 id="fullStats"></h2>
-    <h3><table id="fullTable" style="width: 100%"></table></h3>
+    <canvas id='chart' style='height: 300px; width: 100%'></canvas>
+    <h1 id='rival-title'></h1>
+    <h2 id='rival-stats'></h2>
+    <h3><table id='rival-table' style='width: 100%'></table></h3>
+    <h1 id='full-title'></h1>
+    <h2 id='full-stats'></h2>
+    <h3><table id='full-table' style='width: 100%'></table></h3>
   </body>
-  <footer><script src="main.js"></script></footer>
+  <footer><script src='main.js'></script></footer>
 </html>
