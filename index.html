@@ -2,10 +2,7 @@
 <html>
   <head>
     <title>Terminal Tracker</title>
-    <link
-      rel="shortcut icon"
-      href="https://storage.googleapis.com/manager-static/static/img/favicon.ico"
-    />
+    <link rel="shortcut icon" href="https://storage.googleapis.com/manager-static/static/img/favicon.ico"/>
     <style>
       body {
         font-family: sans-serif;
@@ -24,25 +21,16 @@
         border-radius: 20px;
       }
 
-      h1,
-      h2 {
-        text-align: center;
-      }
+      h1, h2 { text-align: center }
+      h2 { color: grey }
 
-      h2 {
-        color: grey;
-      }
-
-      th,
-      td {
+      th, td {
         padding: 8px;
         text-align: left;
         border-bottom: 1px solid #ddd;
       }
 
-      p {
-        margin-bottom: 9px;
-      }
+      p { margin-bottom: 9px }
     </style>
     <script src="https://unpkg.com/chart.js@2.7.3/dist/Chart.min.js"></script>
   </head>
@@ -55,12 +43,12 @@
       <h2 id="loading"></h2>
     </div>
     <canvas id="chart" style="height: 300px; width: 100%"></canvas>
-    <h1 id="rivalTitle"></h1>
-    <h2 id="rivalStats"></h2>
-    <h3><table id="rivalTable" style="width: 100%"></table></h3>
-    <h1 id="fullTitle"></h1>
-    <h2 id="fullStats"></h2>
-    <h3><table id="fullTable" style="width: 100%"></table></h3>
+    <h1 id="rival-title"></h1>
+    <h2 id="rival-stats"></h2>
+    <h3><table id="rival-table" style="width: 100%"></table></h3>
+    <h1 id="full-title"></h1>
+    <h2 id="full-stats"></h2>
+    <h3><table id="full-table" style="width: 100%"></table></h3>
   </body>
   <footer><script src="main.js"></script></footer>
 </html>
