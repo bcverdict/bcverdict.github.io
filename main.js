@@ -138,7 +138,6 @@ function insertMatch(table, match, algoId) {
 }
 
 function tableTop(table) {
-  insertEntry(table, Array(5).fill('<hr>'))
   insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'])
 }
 
