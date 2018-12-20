@@ -2,7 +2,9 @@ const chartConfig = {
   type: 'line',
   data: {
     labels: [],
-    datasets: [{ data: [], borderColor: '#a3a3d3', backgroundColor: '#a2bbd342' }]
+    datasets: [
+      { data: [], borderColor: '#a3a3d3', backgroundColor: '#a2bbd342' }
+    ]
   },
   options: {
     title: {
@@ -38,15 +40,22 @@ const chartConfig = {
 }
 let chart = undefined
 const K = 32
-var percentage = 0
-var enemy_elo = 0
 
 async function plot() {
+  if (window.location.search == '') {
+    document.getElementById('loading').innerHTML = ''
+    return
+  } else document.getElementById('loading').innerText = 'loading..'
   const algoId = window.location.search.split('?')[1].split('id=')[1]
   document.getElementById('algo-id').value = algoId
-  const response = await (await fetch(
+  const fetched = await fetch(
     `https://terminal.c1games.com/api/game/algo/${algoId}/matches`
-  )).json()
+  )
+  if (fetched.status != 200) {
+    document.getElementById('loading').innerText = 'failed to retrieve data'
+    return
+  }
+  const response = await fetched.json()
   const matches = response.data.matches
   if (!(matches.length > 0)) return
   const algoData =
@@ -138,7 +147,7 @@ function insertMatch(table, match, algoId) {
 }
 
 function tableTop(table) {
-  insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'])
+  insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'].map((string) => `<p>${string}</p>`))
 }
 
 function insertEntry(table, cells) {
