@@ -93,7 +93,7 @@ function tableTop(table) {
   insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'].map((string) => `<p>${string}</p>`))
 }
 
-/// Shorthand to insert a list of [cells] as a row into a [table] as first entry.
+/// Shorthand to insert a list of [cells] as a row into a [table] as its first entry.
 function insertEntry(table, cells) {
   const row = table.insertRow(0)
   cells.forEach((cell, index) => (row.insertCell(index).innerHTML = cell))
