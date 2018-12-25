@@ -27,7 +27,7 @@ async function plot() {
   const response = await fetched.json()
   const matches = response.data.matches.reverse()
   if (!(matches.length > 0)) return document.getElementById('loading').innerText = 'no matches found'
-  const { name, elo } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
+  const { name, elo, createdAt, user } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
   document.querySelector('#name').innerText = `algo: ${name}`
   document.querySelector('#creator').innerText = `creator: ${user}`
