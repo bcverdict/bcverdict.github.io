@@ -30,6 +30,7 @@ async function plot() {
   const { name, elo } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
   document.querySelector('#name').innerText = `algo: ${name}`
+  document.querySelector('#creator').innerText = `creator: ${user}`
   document.querySelector('#created-at').innerText = `created at: ${(new Date(createdAt)).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' })} UTC`
   document.getElementById('loading').innerHTML = ''
   document.title = `${name} (${algoId})`
