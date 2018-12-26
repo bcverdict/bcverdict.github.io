@@ -78,7 +78,7 @@ async function plot() {
 function insertMatch(table, match, algoId) {
   const won = match.winning_algo.id == algoId
   const opponent = won ? match.losing_algo : match.winning_algo
-  insertEntry(table, [`<a href='${window.location.href.substring(0, window.location.href.length - window.location.search.length)}?id=${opponent.id}' target='_blank'>${opponent.name}</a>`, won ? 'W' : 'L', match.turns, opponent.elo, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`], end)
+  insertEntry(table, [`<a href='${window.location.href.substring(0, window.location.href.length - window.location.search.length)}?id=${opponent.id}'>${opponent.name}</a>`, won ? 'W' : 'L', match.turns, opponent.elo, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`], end)
 }
 
 function tableTop(table) {
