@@ -27,8 +27,11 @@ async function plot() {
   const response = await fetched.json()
   const matches = response.data.matches.reverse()
   if (!(matches.length > 0)) return document.getElementById('loading').innerText = 'no matches found'
-  const { name, elo } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
+  const { name, elo, createdAt, user } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
+  document.querySelector('#name').innerText = `algo: ${name}`
+  document.querySelector('#creator').innerText = `creator: ${user}`
+  document.querySelector('#created-at').innerText = `created at: ${(new Date(createdAt)).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' })} UTC`
   document.getElementById('loading').innerHTML = ''
   document.title = `${name} (${algoId})`
   chartConfig.options.title.text = `"${name}" elo over matches`
@@ -75,7 +78,7 @@ async function plot() {
 function insertMatch(table, match, algoId) {
   const won = match.winning_algo.id == algoId
   const opponent = won ? match.losing_algo : match.winning_algo
-  insertEntry(table, [opponent.name, won ? 'W' : 'L', match.turns, opponent.elo, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`])
+  insertEntry(table, [`<a href='${window.location.href.substring(0, window.location.href.length - window.location.search.length)}?id=${opponent.id}'>${opponent.name}</a>`, won ? 'W' : 'L', match.turns, opponent.elo, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`], end)
 }
 
 function tableTop(table) {
