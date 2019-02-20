@@ -7,7 +7,7 @@ const chartConfig = {
     tooltips: { mode: 'nearest', intersect: false, backgroundColor: 'hsla(240,25%,76%,.81)', displayColors: false },
     legend: { display: false },
     scales: {
-      yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'rating' } }],
+      yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Elo' } }],
       xAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Opponents' }, ticks: { display: false } }]
     }
   }
@@ -82,7 +82,7 @@ function insertMatch(table, match, algoId) {
 }
 
 function tableTop(table) {
-  insertEntry(table, ['Algo name', 'Result', 'Turns', 'rating', 'Game'].map((string) => `<p>${string}</p>`))
+  insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'].map((string) => `<p>${string}</p>`))
 }
 
 function insertEntry(table, cells) {
