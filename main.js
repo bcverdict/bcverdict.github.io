@@ -7,7 +7,7 @@ const chartConfig = {
     tooltips: { mode: 'nearest', intersect: false, backgroundColor: 'hsla(240,25%,76%,.81)', displayColors: false },
     legend: { display: false },
     scales: {
-      yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Elo' } }],
+      yAxes: [{ display: true, scaleLabel: { display: true, labelString: 'rating' } }],
       xAxes: [{ display: true, scaleLabel: { display: true, labelString: 'Opponents' }, ticks: { display: false } }]
     }
   }
@@ -27,17 +27,17 @@ async function plot() {
   const response = await fetched.json()
   const matches = response.data.matches.reverse()
   if (!(matches.length > 0)) return document.getElementById('loading').innerText = 'no matches found'
-  const { name, elo, createdAt, user } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
+  const { name, rating, createdAt, user } = matches[0].winning_algo.id == algoId ? matches[0].winning_algo : matches[0].losing_algo
   // update config
   document.querySelector('#name').innerText = `algo: ${name}`
   document.querySelector('#creator').innerText = `creator: ${user}`
   document.querySelector('#created-at').innerText = `created at: ${(new Date(createdAt)).toLocaleDateString('en', { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false, timeZone: 'UTC' })} UTC`
   document.getElementById('loading').innerHTML = ''
   document.title = `${name} (${algoId})`
-  chartConfig.options.title.text = `"${name}" elo over matches`
+  chartConfig.options.title.text = `"${name}" rating over matches`
   chartConfig.data.datasets[0].data.length = 0
   chartConfig.data.labels.length = 0
-  let previousElo = 1500
+  let previousrating = 1500
   const frequency = new Map()
   // full table
   const fullTable = document.getElementById('full-table')
@@ -51,7 +51,7 @@ async function plot() {
     if (won) wins++
     frequency.set(opponent.user, (frequency.get(opponent.user) || 0) + 1)
     chartConfig.data.labels.push(opponent.name)
-    chartConfig.data.datasets[0].data.push(index == matches.length - 1 ? elo : Math.round((previousElo += K * ((won ? 1 : 0) - 1 / (1 + Math.pow(10, (opponent.elo - previousElo) / 400))))))
+    chartConfig.data.datasets[0].data.push(index == matches.length - 1 ? rating : Math.round((previousrating += K * ((won ? 1 : 0) - 1 / (1 + Math.pow(10, (opponent.rating - previousrating) / 400))))))
   })
   document.getElementById('full-title').innerHTML = `All games`
   document.getElementById('full-stats').innerHTML = `Wins: ${wins} Losses: ${matches.length - wins}`
@@ -78,11 +78,11 @@ async function plot() {
 function insertMatch(table, match, algoId) {
   const won = match.winning_algo.id == algoId
   const opponent = won ? match.losing_algo : match.winning_algo
-  insertEntry(table, [opponent.name, won ? 'W' : 'L', match.turns, opponent.elo, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`])
+  insertEntry(table, [opponent.name, won ? 'W' : 'L', match.turns, opponent.rating, `<a href='https://terminal.c1games.com/watch/${match.id}' target='_blank'>watch</a>`])
 }
 
 function tableTop(table) {
-  insertEntry(table, ['Algo name', 'Result', 'Turns', 'Elo', 'Game'].map((string) => `<p>${string}</p>`))
+  insertEntry(table, ['Algo name', 'Result', 'Turns', 'rating', 'Game'].map((string) => `<p>${string}</p>`))
 }
 
 function insertEntry(table, cells) {
